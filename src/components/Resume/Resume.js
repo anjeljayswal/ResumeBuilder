@@ -110,7 +110,7 @@ const Resume = forwardRef((props, ref) => {
     //         <p className={styles.heading}>{info.basicInfo?.detail?.fname}</p>
     //         <p className={styles.subHeading}>{info.basicInfo?.detail?.jtitle}</p>
     //       {/* </div> */}
-          
+
     //     {/* </div> */}
     //     <div className={styles.links}>
     //       {info.basicInfo?.detail?.email ? (
@@ -342,7 +342,7 @@ const Resume = forwardRef((props, ref) => {
           {info.langauge?.sectionTitle}
         </div>
         <div className={styles.content}>
-          {info.langauge?.points?.length > 0 ? (
+          {info.langauge?.point?.length > 0 ? (
             <ul className={styles.numbered}>
               {info.langauge?.points?.map((elem, index) => (
                 <li className={styles.point} key={elem + index}>
@@ -403,8 +403,8 @@ const Resume = forwardRef((props, ref) => {
 
   useEffect(() => {
     setColumns([
-      [sections.langauge,sections.skills ],
-      [sections.summary,sections.project, sections.workExp,  sections.education,],
+      [sections.langauge, sections.skills],
+      [sections.summary, sections.project, sections.workExp, sections.education,],
     ]);
   }, []);
 
@@ -412,12 +412,12 @@ const Resume = forwardRef((props, ref) => {
     swapSourceTarget(source, target);
   }, [source]);
 
-  useEffect(() => {
-    const container = containerRef.current;
-    if (!props.activeColor || !container) return;
+  // useEffect(() => {
+  //   const container = containerRef.current;
+  //   if (!props.activeColor || !container) return;
 
-    container.style.setProperty("--color", props.activeColor);
-  }, [props.activeColor]);
+  //   container.style.setProperty("--color", props.activeColor);
+  // }, [props.activeColor]);
 
   const handleDownload = () => {
     const input = pdfRef.current;
@@ -438,10 +438,11 @@ const Resume = forwardRef((props, ref) => {
       pdf.save('resume.pdf');
     })
   };
-  
+
   return (
     <div ref={ref}>
       <div ref={containerRef} className={styles.container}>
+
         <div className={styles.mainheader}>
           <button>Select</button>
           <button>-</button>
@@ -461,58 +462,53 @@ const Resume = forwardRef((props, ref) => {
           <button >Export to docs</button>
 
         </div>
-        {/* {
-          imgRef.current
-        } */}
-       
-        <div className={styles.rbody}>
+
+        <div ref={pdfRef} className={styles.rbody}>
           {/* <div className={styles.subrbody}> */}
           <div className={styles.header}>
-              <div className={styles.profilemain}>
-                <div className={styles.profilemain1}>
-                  <p className={styles.heading}>{info.basicInfo?.detail?.fname}</p>
-                  <p className={styles.subHeading}>{info.basicInfo?.detail?.jtitle}</p>
-                </div>
-                <div className={styles.profilemain2}>
-                  <img src={info.basicInfo?.detail?.profilePhoto} alt="" />
-                </div>
-
+            <div className={styles.profilemain}>
+              <div className={styles.profilemain1}>
+                <p className={styles.heading}>{info.basicInfo?.detail?.name}</p>
+                <p className={styles.subHeading}>{info.basicInfo?.detail?.title}</p>
               </div>
 
 
-              <div className={styles.links}>
-                {info.basicInfo?.detail?.email ? (
-                  <a className={styles.link} type="email">
-                    <AtSign /> {info.basicInfo?.detail?.email}
-                  </a>
-                ) : (
-                  <span />
-                )}
-                {info.basicInfo?.detail?.phone ? (
-                  <a className={styles.link}>
-                    <Phone /> {info.basicInfo?.detail?.phone}
-                  </a>
-                ) : (
-                  <span />
-                )}
-                {info.basicInfo?.detail?.linkedin ? (
-                  <a className={styles.link}>
-                    <Linkedin /> {info.basicInfo?.detail?.linkedin}
-                  </a>
-                ) : (
-                  <span />
-                )}
-                {info.basicInfo?.detail?.github ? (
-                  <a className={styles.link}>
-                    <GitHub /> {info.basicInfo?.detail?.github}
-                  </a>
-                ) : (
-                  <span />
-                )}
-              </div>
             </div>
 
-          <div ref={pdfRef} className={styles.main}>
+
+            <div className={styles.links}>
+              {info.basicInfo?.detail?.email ? (
+                <a className={styles.link} type="email">
+                  <AtSign /> {info.basicInfo?.detail?.email}
+                </a>
+              ) : (
+                <span />
+              )}
+              {info.basicInfo?.detail?.phone ? (
+                <a className={styles.link}>
+                  <Phone /> {info.basicInfo?.detail?.phone}
+                </a>
+              ) : (
+                <span />
+              )}
+              {info.basicInfo?.detail?.linkedin ? (
+                <a className={styles.link}>
+                  <Linkedin /> {info.basicInfo?.detail?.linkedin}
+                </a>
+              ) : (
+                <span />
+              )}
+              {info.basicInfo?.detail?.github ? (
+                <a className={styles.link}>
+                  <GitHub /> {info.basicInfo?.detail?.github}
+                </a>
+              ) : (
+                <span />
+              )}
+            </div>
+          </div>
+
+          <div  className={styles.main}>
             <div className={styles.col1}>
               {columns[0].map((item) => sectionDiv[item])}
             </div>

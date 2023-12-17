@@ -7,7 +7,6 @@ import styles from "./Editor.module.css";
 
 function Editor(props) {
   const [completedSection1, setCompletedsection] = useState({});
-  const [profilePhoto, setProfilePhoto] = useState(null); //profile
   const [editorCompletion, setEditorCompletion] = useState(0);
   const sections = props.sections;
   const information = props.information;
@@ -25,12 +24,10 @@ function Editor(props) {
   const [values, setValues] = useState({
     name: activeInformation?.detail?.name || "",
     title: activeInformation?.detail?.title || "",
-    jtitle: activeInformation?.detail?.jtitle || "",
     linkedin: activeInformation?.detail?.linkedin || "",
     github: activeInformation?.detail?.github || "",
     phone: activeInformation?.detail?.phone || "",
     email: activeInformation?.detail?.email || "",
-    profilePhoto: activeInformation?.detail?.profilePhoto || "",
   });
 
 
@@ -42,39 +39,35 @@ function Editor(props) {
     setValues(tempValues);
   };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setProfilePhoto(file);
-  };
-  const generateProfileSection = () => {
-    return (
-      <div className={styles.profileSection}>
-        <div className={styles.profilePhotoContainer}>
-          {profilePhoto ? (
-            <img src={URL.createObjectURL(profilePhoto)} alt="Profile" />
-          ) : (
-            /* <div className={styles.placeholder}>No Photo</div> */
-            <div className={`${styles.placeholder} ${styles.noPhoto}`}>
-              No Photo
-            </div>
-          )}
-                   
-            <div className={styles.inputContainer}>
-              <InputControl
-                type="file"
-                id="profilePhoto"
-                name="profilePhoto"
-                accept="image/*"
-                onChange={handleFileChange}
-              />              
-            </div>
+  // const generateProfileSection = () => {
+  //   return (
+  //     <div className={styles.profileSection}>
+  //       <div className={styles.profilePhotoContainer}>
+  //         {profilePhoto ? (
+  //           <img src={URL.createObjectURL(profilePhoto)} alt="Profile" />
+  //         ) : (
+  //           /* <div className={styles.placeholder}>No Photo</div> */
+  //           <div className={`${styles.placeholder} ${styles.noPhoto}`}>
+  //             No Photo
+  //           </div>
+  //         )}
 
-          
-        </div>
-      </div>
-    );
-  };
-  
+  //           <div className={styles.inputContainer}>
+  //             <InputControl
+  //               type="file"
+  //               id="profilePhoto"
+  //               name="profilePhoto"
+  //               accept="image/*"
+  //               onChange={handleFileChange}
+  //             />              
+  //           </div>
+
+
+  //       </div>
+  //     </div>
+  //   );
+  // };
+
   const workExpBody = (
     <div className={styles.detail}>
       <div className={styles.row}>
@@ -265,15 +258,15 @@ function Editor(props) {
   const basicInfoBody = (
     <div className={styles.detail}>
       <div className={styles.row}>
-        <InputControl
+        {/* <InputControl
           label="Wanted Job Title"
           value={values.jtitle}
           placeholder="Enter your title eg. Frontend developer"
           onChange={(event) =>
             setValues((prev) => ({ ...prev, jtitle: event.target.value }))
-          }
-        />
-        {generateProfileSection()}
+          } 
+        />*/}
+        {/* {generateProfileSection()} */}
         {/* <InputControl
           label="Photo"
           value={values.photo}
@@ -300,12 +293,20 @@ function Editor(props) {
         <InputControl
           label="Name"
           placeholder="Enter your full name eg. Aashu"
-          value={values.fname}
+          value={values.name}
           onChange={(event) =>
-            setValues((prev) => ({ ...prev, fname: event.target.value }))
+            setValues((prev) => ({ ...prev, name: event.target.value }))
           }
         />
-        
+        <InputControl
+          label="Title"
+          value={values.title}
+          placeholder="Enter your title eg. Frontend developer"
+          onChange={(event) =>
+            setValues((prev) => ({ ...prev, title: event.target.value }))
+          }
+        />
+
 
       </div>
       <div className={styles.row}>
@@ -414,7 +415,7 @@ function Editor(props) {
       />
     </div>
   );
-  
+
 
   const generateBody = () => {
     switch (sections[activeSectionKey]) {
@@ -438,14 +439,12 @@ function Editor(props) {
   };
 
   const handleSubmission = () => {
-    setCompletedsection(prev=>({...prev,[activeSectionKey]:true}))
+    setCompletedsection(prev => ({ ...prev, [activeSectionKey]: true }))
     switch (sections[activeSectionKey]) {
       case sections.basicInfo: {
         const tempDetail = {
           name: values.name,
-          profilePhoto:values.profilePhoto,
-          jtitle: values.jtitle,
-          title:values.title,
+          title: values.title,
           linkedin: values.linkedin,
           github: values.github,
           email: values.email,
@@ -540,7 +539,7 @@ function Editor(props) {
         break;
       }
       case sections.langauge: {
-        const tempPoints = values.points;
+        const tempPoints = values.point;
 
         props.setInformation((prev) => ({
           ...prev,
@@ -564,7 +563,7 @@ function Editor(props) {
           },
         }));
         break;
-      }      
+      }
     }
   };
 
@@ -608,8 +607,7 @@ function Editor(props) {
     setSectionTitle(sections[activeSectionKey]);
     setActiveDetailIndex(0);
     setValues({
-      fname: activeInfo?.detail?.fname || "",
-      lname: activeInfo?.detail?.lname || "",
+      name: activeInfo?.detail?.name || "",
       overview: activeInfo?.details
         ? activeInfo.details[0]?.overview || ""
         : "",
@@ -637,9 +635,9 @@ function Editor(props) {
         : activeInfo?.points
           ? [...activeInfo.points]
           : "",
-      jtitle: activeInfo?.details
-        ? activeInfo.details[0]?.jtitle || ""
-        : activeInfo?.detail?.jtitle || "",
+      title: activeInfo?.details
+        ? activeInfo.details[0]?.title || ""
+        : activeInfo?.detail?.title || "",
       linkedin: activeInfo?.detail?.linkedin || "",
       github: activeInfo?.details
         ? activeInfo.details[0]?.github || ""
@@ -683,9 +681,9 @@ function Editor(props) {
     project: 0.15,
     education: 0.1,
     skills: 0.1,
-    langauge:0.1,
+    langauge: 0.1,
     summary: 0.1,
-   
+
   };
 
   // Calculate the total weight
@@ -701,11 +699,11 @@ function Editor(props) {
     );
 
     const completedWeight = completedSections.reduce(
-      (total, section) => total + (sectionWeights[section]?? 0),
+      (total, section) => total + (sectionWeights[section] ?? 0),
       0
     );
     const res = (completedWeight / totalWeight) * 100;
-    console.log({completedSection1,res,completedSections,completedWeight,sectionWeights,sections,information})
+    console.log({ completedSection1, res, completedSections, completedWeight, sectionWeights, sections, information })
 
     return res;
   };
@@ -784,7 +782,7 @@ function Editor(props) {
 
         <button onClick={handleSubmission}>Save</button>
       </div>
-          </div>
+    </div>
 
   );
 }

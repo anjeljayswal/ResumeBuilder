@@ -54,7 +54,7 @@ function Body() {
     [sections.langauge]:{
       id:sections.langauge,
       sectionTitle:sections.langauge,
-      points:[],
+      point:[],
     },
 
 
