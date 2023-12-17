@@ -312,6 +312,7 @@ function Editor(props) {
       <div className={styles.row}>
         <InputControl
           label="Email"
+          type="email"
           value={values.email}
           placeholder="Enter your email"
           onChange={(event) =>
@@ -321,6 +322,7 @@ function Editor(props) {
         <InputControl
           label="Enter phone"
           value={values.phone}
+          type="number"
           placeholder="Enter your phone number"
           onChange={(event) =>
             setValues((prev) => ({ ...prev, phone: event.target.value }))

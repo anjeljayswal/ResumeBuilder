@@ -1,6 +1,7 @@
-import { html2pdf } from "html2pdf.js";
+import html2pdf  from "html2pdf.js";
+
 import ReactToPrint from "react-to-print";
-import { ArrowDown } from "react-feather";
+import { ArrowDown, Download } from "react-feather";
 import html2canvas from 'html2canvas';
 import jsPDF from "jspdf";
 import React, { forwardRef, useEffect, useRef, useState } from "react";
@@ -24,6 +25,35 @@ const Resume = forwardRef((props, ref) => {
   const pdfRef = useRef();
   const imgRef = useRef();
 
+  const [loader, setLoader] = useState(false);
+  const downloadPDF = () => {
+    const capture = document.querySelector('.rbody');
+    setLoader(true);
+    html2canvas(capture).then((canvas) => {
+      const imgData = canvas.toDataURL('img/png');
+      const doc = new jsPDF('p', 'mm', 'a4');
+      const componentWidth = doc.internal.pageSize.getWidth();
+      const componentHeight = doc.internal.pageSize.getHeight();
+      doc.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight);
+      setLoader(false);
+      doc.save('receipt.pdf');
+    })
+  }
+  const handleSaveAsDocument = () => {
+    const contentElement = document.getElementById('content');
+
+    if (contentElement) {
+      html2pdf(contentElement, {
+        margin: 10,
+        filename: "fileName",
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      });
+    } else {
+      console.error(`Element with id  not found.`);
+    }
+  };
 
 
   const [columns, setColumns] = useState([[], []]);
@@ -432,8 +462,8 @@ const Resume = forwardRef((props, ref) => {
       const imgWidth = canvas.width;
       const imgHeight = canvas.height;
       const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-      const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = 2;
+      const imgX = (pdfWidth - imgWidth * ratio)/2 ;
+      const imgY = 10;
       pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
       pdf.save('resume.pdf');
     })
@@ -459,11 +489,21 @@ const Resume = forwardRef((props, ref) => {
           }}
           content={() => resumeRef.current}
         /> */}
-          <button >Export to docs</button>
+          <button
+            onClick={downloadPDF}
+            disabled={loader}
+          >
+            {loader ? (
+              <span>Downloading</span>
+            ) : (
+              <span>Download</span>
+            )}
+          </button>
+          <button onClick={handleSaveAsDocument}>Save as Document</button>
 
         </div>
-
-        <div ref={pdfRef} className={styles.rbody}>
+        
+        <div ref={pdfRef} id="content" className={styles.rbody}>
           {/* <div className={styles.subrbody}> */}
           <div className={styles.header}>
             <div className={styles.profilemain}>
@@ -508,7 +548,7 @@ const Resume = forwardRef((props, ref) => {
             </div>
           </div>
 
-          <div  className={styles.main}>
+          <div className={styles.main}>
             <div className={styles.col1}>
               {columns[0].map((item) => sectionDiv[item])}
             </div>
