@@ -63,20 +63,7 @@ function Body() {
   return (
     <div className={styles.container}>
 
-      <div className={styles.toolbar}>
-        
-        {/* <ReactToPrint
-          trigger={() => {
-            return (
-              <button>
-                Download <ArrowDown />
-              </button>
-            );
-          }}
-          content={() => resumeRef.current}
-        /> */}
-
-      </div>
+      
       <div className={styles.main}>
         <div className={styles.leftside}>
           <p className={styles.heading}>Resume Builder</p>

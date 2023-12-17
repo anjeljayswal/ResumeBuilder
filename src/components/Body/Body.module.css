@@ -15,68 +15,36 @@
   text-align: center;
 }
 
-.toolbar {
-  width: 100%;
-  display: flex;
-  gap: 40px;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .colors {
   display: flex;
   gap: 20px;
   padding: 0 30px;
 }
-
-
-
-.toolbar button {
-  padding: 8px 16px;
-  border-radius: 5px;
-  background-color: #239ce2;
-  color: #fff;
-  outline: none;
-  border: none;
-  font-weight: 500;
-  font-size: 1rem;
-  letter-spacing: 1px;
-  display: flex;
-  gap: 5px;
-  align-items: center;
-  cursor: pointer;
-}
-
-.toolbar button svg {
-  height: 20px;
-  width: 20px;
-}
-
 .main {
   display: flex;
   flex-direction: row;
   /* flex-wrap: wrap; */
   /* gap: 30px; */
   width: 100%;
-  height: 100%; /* Take up full height */
-  /* overflow: hidden; Hide overflow to prevent double scrollbar */
+  height: 100%; 
+  /* /* overflow: hidden;  */
 }
 .leftside {
-  flex: 1; /* Take up 50% width */
-  height: auto; /* Take up full height */
-  /* overflow-y: auto; Add vertical scrollbar if content overflows */
-  padding-left: 10px; /* Adjust padding to make room for scrollbar */
-  width: 40%;
+  flex: 1; 
+  height: auto; 
+  /* /* overflow-y: auto; 
+  padding-left: 10px; 
+  width: 40%; */
 }
 
 .rightside {
   width: 60%;
-  flex: 1; /* Take remaining width */
-  overflow-x: auto; /* Add vertical scrollbar if content overflows */
+  flex: 1; 
+  overflow-x: auto; 
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding-right: 10px; /* Adjust padding to make room for scrollbar */
+  padding-right: 10px; 
   position: fixed;
 
 }

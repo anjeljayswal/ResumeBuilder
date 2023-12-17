@@ -1,4 +1,4 @@
-import html2pdf  from "html2pdf.js";
+import html2pdf from "html2pdf.js";
 
 import ReactToPrint from "react-to-print";
 import { ArrowDown, Download } from "react-feather";
@@ -462,7 +462,7 @@ const Resume = forwardRef((props, ref) => {
       const imgWidth = canvas.width;
       const imgHeight = canvas.height;
       const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-      const imgX = (pdfWidth - imgWidth * ratio)/2 ;
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
       const imgY = 10;
       pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
       pdf.save('resume.pdf');
@@ -479,86 +479,81 @@ const Resume = forwardRef((props, ref) => {
           <p>Aa</p>
           <button>+</button>
           <button onClick={handleDownload}>Download PDF</button>
-          {/* <ReactToPrint
-          trigger={() => {
-            return (
-              <button>
-                Download <ArrowDown />
-              </button>
-            );
-          }}
-          content={() => resumeRef.current}
-        /> */}
-          <button
-            onClick={downloadPDF}
-            disabled={loader}
-          >
-            {loader ? (
-              <span>Downloading</span>
-            ) : (
-              <span>Download</span>
-            )}
-          </button>
-          <button onClick={handleSaveAsDocument}>Save as Document</button>
+          <ReactToPrint
+            trigger={() => {
+              return (
+                <button>
+                  Save As
+                </button>
+              );
+            }}
+            content={() => resumeRef.current}
+          />
+
+          {/* <button onClick={handleSaveAsDocument}>Save as Document</button> */}
 
         </div>
         
-        <div ref={pdfRef} id="content" className={styles.rbody}>
-          {/* <div className={styles.subrbody}> */}
-          <div className={styles.header}>
-            <div className={styles.profilemain}>
-              <div className={styles.profilemain1}>
-                <p className={styles.heading}>{info.basicInfo?.detail?.name}</p>
-                <p className={styles.subHeading}>{info.basicInfo?.detail?.title}</p>
+          {/* <div ref={pdfRef} id="content" className={styles.rbody}> */}
+          <div ref={resumeRef} id="content" className={styles.rbody}>
+          <div ref={pdfRef}>
+            {/* <div className={styles.subrbody}> */}
+            <div className={styles.header}>
+              <div className={styles.profilemain}>
+                <div className={styles.profilemain1}>
+                  <p className={styles.heading}>{info.basicInfo?.detail?.name}</p>
+                  <p className={styles.subHeading}>{info.basicInfo?.detail?.title}</p>
+                </div>
+
+
               </div>
 
 
+              <div className={styles.links}>
+                {info.basicInfo?.detail?.email ? (
+                  <a className={styles.link} type="email">
+                    <AtSign /> {info.basicInfo?.detail?.email}
+                  </a>
+                ) : (
+                  <span />
+                )}
+                {info.basicInfo?.detail?.phone ? (
+                  <a className={styles.link}>
+                    <Phone /> {info.basicInfo?.detail?.phone}
+                  </a>
+                ) : (
+                  <span />
+                )}
+                {info.basicInfo?.detail?.linkedin ? (
+                  <a className={styles.link}>
+                    <Linkedin /> {info.basicInfo?.detail?.linkedin}
+                  </a>
+                ) : (
+                  <span />
+                )}
+                {info.basicInfo?.detail?.github ? (
+                  <a className={styles.link}>
+                    <GitHub /> {info.basicInfo?.detail?.github}
+                  </a>
+                ) : (
+                  <span />
+                )}
+              </div>
             </div>
 
+            <div className={styles.main}>
+              <div className={styles.col1}>
+                {columns[0].map((item) => sectionDiv[item])}
+              </div>
+              <div className={styles.col2}>
+                {columns[1].map((item) => sectionDiv[item])}
+              </div>
+            </div>
 
-            <div className={styles.links}>
-              {info.basicInfo?.detail?.email ? (
-                <a className={styles.link} type="email">
-                  <AtSign /> {info.basicInfo?.detail?.email}
-                </a>
-              ) : (
-                <span />
-              )}
-              {info.basicInfo?.detail?.phone ? (
-                <a className={styles.link}>
-                  <Phone /> {info.basicInfo?.detail?.phone}
-                </a>
-              ) : (
-                <span />
-              )}
-              {info.basicInfo?.detail?.linkedin ? (
-                <a className={styles.link}>
-                  <Linkedin /> {info.basicInfo?.detail?.linkedin}
-                </a>
-              ) : (
-                <span />
-              )}
-              {info.basicInfo?.detail?.github ? (
-                <a className={styles.link}>
-                  <GitHub /> {info.basicInfo?.detail?.github}
-                </a>
-              ) : (
-                <span />
-              )}
             </div>
           </div>
+        {/* </div> */}
 
-          <div className={styles.main}>
-            <div className={styles.col1}>
-              {columns[0].map((item) => sectionDiv[item])}
-            </div>
-            <div className={styles.col2}>
-              {columns[1].map((item) => sectionDiv[item])}
-            </div>
-          </div>
-
-          {/* </div> */}
-        </div>
 
       </div>
     </div>
