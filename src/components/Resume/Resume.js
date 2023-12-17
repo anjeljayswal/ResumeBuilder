@@ -1,3 +1,8 @@
+import { html2pdf } from "html2pdf.js";
+import ReactToPrint from "react-to-print";
+import { ArrowDown } from "react-feather";
+import html2canvas from 'html2canvas';
+import jsPDF from "jspdf";
 import React, { forwardRef, useEffect, useRef, useState } from "react";
 import {
   AtSign,
@@ -15,19 +20,27 @@ const Resume = forwardRef((props, ref) => {
   const information = props.information;
   const sections = props.sections;
   const containerRef = useRef();
+  const resumeRef = useRef();
+  const pdfRef = useRef();
+  const imgRef = useRef();
+
+
 
   const [columns, setColumns] = useState([[], []]);
   const [source, setSource] = useState("");
   const [target, seTarget] = useState("");
 
   const info = {
+
+    langauge: information[sections.langauge],
     workExp: information[sections.workExp],
     project: information[sections.project],
-    achievement: information[sections.achievement],
+    skills: information[sections.skills],
+
     education: information[sections.education],
     basicInfo: information[sections.basicInfo],
     summary: information[sections.summary],
-    other: information[sections.other],
+
   };
 
   const getFormattedDate = (value) => {
@@ -38,6 +51,102 @@ const Resume = forwardRef((props, ref) => {
   };
 
   const sectionDiv = {
+    // [sections.basicInfo]: (
+    //   <div key={"basicInfo"} className={styles.section}>
+    //     <div className={styles.profilemain}>
+    //       <div className={styles.profilemain1}>
+    //         <p className={styles.heading}>{info.basicInfo?.detail?.fname}</p>
+    //         <p className={styles.subHeading}>{info.basicInfo?.detail?.jtitle}</p>
+    //       </div>
+    //       <div className={styles.profilemain2}>
+    //         {/* You can add an image here if needed */}
+    //       </div>
+    //     </div>
+    //     <div className={styles.links}>
+    //       {info.basicInfo?.detail?.email ? (
+    //         <a className={styles.link} type="email">
+    //           <AtSign /> {info.basicInfo?.detail?.email}
+    //         </a>
+    //       ) : (
+    //         <span />
+    //       )}
+
+    //       {info.basicInfo?.detail?.linkedin ? (
+    //         <a className={styles.link}>
+    //           <Linkedin /> {info.basicInfo?.detail?.linkedin}
+    //         </a>
+    //       ) : (
+    //         <span />
+    //       )}
+    //       {info.basicInfo?.detail?.github ? (
+    //         <a className={styles.link}>
+    //           <GitHub /> {info.basicInfo?.detail?.github}
+    //         </a>
+    //       ) : (
+    //         <span />
+    //       )}
+    //       {info.basicInfo?.detail?.phone ? (
+    //         <a className={styles.link}>
+    //           <Phone /> {info.basicInfo?.detail?.phone}
+    //         </a>
+    //       ) : (
+    //         <span />
+    //       )}
+    //     </div>
+    //   </div>
+    // ),
+    // [sections.basicInfo]: (
+    //   <div key={"basicInfo"} className={styles.sections}>
+    //     {/* <div className={styles.profilemain}> */}
+    //     {/* <div className={styles.profilemain2}> */}
+    //         {/* Add image here with circle shape */}
+    //         <img
+    //           src={info.basicInfo?.detail?.imageUrl}  
+    //           alt="Profile"
+    //           className={styles.profileImage}
+    //         />
+    //       {/* </div> */}
+    //       {/* <div className={styles.profilemain1}> */}
+    //         <p className={styles.heading}>{info.basicInfo?.detail?.fname}</p>
+    //         <p className={styles.subHeading}>{info.basicInfo?.detail?.jtitle}</p>
+    //       {/* </div> */}
+          
+    //     {/* </div> */}
+    //     <div className={styles.links}>
+    //       {info.basicInfo?.detail?.email ? (
+    //         <a className={styles.link} type="email">
+    //           <AtSign /> {info.basicInfo?.detail?.email}
+    //         </a>
+    //       ) : (
+    //         <span />
+    //       )}
+
+    //       {info.basicInfo?.detail?.linkedin ? (
+    //         <a className={styles.link}>
+    //           <Linkedin /> {info.basicInfo?.detail?.linkedin}
+    //         </a>
+    //       ) : (
+    //         <span />
+    //       )}
+    //       {info.basicInfo?.detail?.github ? (
+    //         <a className={styles.link}>
+    //           <GitHub /> {info.basicInfo?.detail?.github}
+    //         </a>
+    //       ) : (
+    //         <span />
+    //       )}
+    //       {info.basicInfo?.detail?.phone ? (
+    //         <a className={styles.link}>
+    //           <Phone /> {info.basicInfo?.detail?.phone}
+    //         </a>
+    //       ) : (
+    //         <span />
+    //       )}
+    //     </div>
+    //   </div>
+    // ),
+
+
     [sections.workExp]: (
       <div
         key={"workexp"}
@@ -193,22 +302,49 @@ const Resume = forwardRef((props, ref) => {
         </div>
       </div>
     ),
-    [sections.achievement]: (
+    [sections.skills]: (
       <div
-        key={"achievement"}
+        key={"skills"}
         draggable
-        onDragOver={() => seTarget(info.achievement?.id)}
-        onDragEnd={() => setSource(info.achievement?.id)}
-        className={`${styles.section} ${info.achievement?.sectionTitle ? "" : styles.hidden
+        onDragOver={() => seTarget(info.skills?.id)}
+        onDragEnd={() => setSource(info.skills?.id)}
+        className={`${styles.section} ${info.skills?.sectionTitle ? "" : styles.hidden
           }`}
       >
         <div className={styles.sectionTitle}>
-          {info.achievement?.sectionTitle}
+          {info.skills?.sectionTitle}
         </div>
         <div className={styles.content}>
-          {info.achievement?.points?.length > 0 ? (
+          {info.skills?.points?.length > 0 ? (
             <ul className={styles.numbered}>
-              {info.achievement?.points?.map((elem, index) => (
+              {info.skills?.points?.map((elem, index) => (
+                <li className={styles.point} key={elem + index}>
+                  {elem}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <span />
+          )}
+        </div>
+      </div>
+    ),
+    [sections.langauge]: (
+      <div
+        key={"langauge"}
+        draggable
+        onDragOver={() => seTarget(info.langauge?.id)}
+        onDragEnd={() => setSource(info.langauge?.id)}
+        className={`${styles.section} ${info.langauge?.sectionTitle ? "" : styles.hidden
+          }`}
+      >
+        <div className={styles.sectionTitle}>
+          {info.langauge?.sectionTitle}
+        </div>
+        <div className={styles.content}>
+          {info.langauge?.points?.length > 0 ? (
+            <ul className={styles.numbered}>
+              {info.langauge?.points?.map((elem, index) => (
                 <li className={styles.point} key={elem + index}>
                   {elem}
                 </li>
@@ -235,21 +371,7 @@ const Resume = forwardRef((props, ref) => {
         </div>
       </div>
     ),
-    [sections.other]: (
-      <div
-        key={"other"}
-        draggable
-        onDragOver={() => seTarget(info.other?.id)}
-        onDragEnd={() => setSource(info.other?.id)}
-        className={`${styles.section} ${info.other?.sectionTitle ? "" : styles.hidden
-          }`}
-      >
-        <div className={styles.sectionTitle}>{info.other?.sectionTitle}</div>
-        <div className={styles.content}>
-          <p className={styles.overview}>{info?.other?.detail}</p>
-        </div>
-      </div>
-    ),
+
   };
 
   const swapSourceTarget = (source, target) => {
@@ -281,8 +403,8 @@ const Resume = forwardRef((props, ref) => {
 
   useEffect(() => {
     setColumns([
-      [sections.project, sections.education, sections.summary],
-      [sections.workExp, sections.achievement, sections.other],
+      [sections.langauge,sections.skills ],
+      [sections.summary,sections.project, sections.workExp,  sections.education,],
     ]);
   }, []);
 
@@ -297,6 +419,26 @@ const Resume = forwardRef((props, ref) => {
     container.style.setProperty("--color", props.activeColor);
   }, [props.activeColor]);
 
+  const handleDownload = () => {
+    const input = pdfRef.current;
+    html2canvas(input).then((canvas) => {
+      // input.current=[...input.current,canvas];
+      // imgRef.current=canvas;
+      // console.log(input,canvas);
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'pt', 'a4');
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = 2;
+      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+      pdf.save('resume.pdf');
+    })
+  };
+  
   return (
     <div ref={ref}>
       <div ref={containerRef} className={styles.container}>
@@ -305,20 +447,34 @@ const Resume = forwardRef((props, ref) => {
           <button>-</button>
           <p>Aa</p>
           <button>+</button>
-          <button>Download</button>
-          <button>...</button>
+          <button onClick={handleDownload}>Download PDF</button>
+          {/* <ReactToPrint
+          trigger={() => {
+            return (
+              <button>
+                Download <ArrowDown />
+              </button>
+            );
+          }}
+          content={() => resumeRef.current}
+        /> */}
+          <button >Export to docs</button>
 
         </div>
+        {/* {
+          imgRef.current
+        } */}
+       
         <div className={styles.rbody}>
-          <div className={styles.subrbody}>
-            <div className={styles.header}>
+          {/* <div className={styles.subrbody}> */}
+          <div className={styles.header}>
               <div className={styles.profilemain}>
                 <div className={styles.profilemain1}>
                   <p className={styles.heading}>{info.basicInfo?.detail?.fname}</p>
                   <p className={styles.subHeading}>{info.basicInfo?.detail?.jtitle}</p>
                 </div>
                 <div className={styles.profilemain2}>
-                  {/* <img src={info.basicInfo?AtSign.detail?.image} /> */}
+                  <img src={info.basicInfo?.detail?.profilePhoto} alt="" />
                 </div>
 
               </div>
@@ -356,18 +512,16 @@ const Resume = forwardRef((props, ref) => {
               </div>
             </div>
 
-            <div className={styles.main}>
-              <div className={styles.col1}>
-                {columns[0].map((item) => sectionDiv[item])}
-              </div>
-              <div className={styles.col2}>
-                {columns[1].map((item) => sectionDiv[item])}
-              </div>
+          <div ref={pdfRef} className={styles.main}>
+            <div className={styles.col1}>
+              {columns[0].map((item) => sectionDiv[item])}
             </div>
-
+            <div className={styles.col2}>
+              {columns[1].map((item) => sectionDiv[item])}
+            </div>
           </div>
 
-
+          {/* </div> */}
         </div>
 
       </div>

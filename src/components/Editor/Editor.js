@@ -6,10 +6,7 @@ import InputControl from "../InputControl/InputControl";
 import styles from "./Editor.module.css";
 
 function Editor(props) {
-  // const {
-  //   // ... other props
-  //   profilePhoto // Add the new prop for the image
-  // } = props;
+  const [completedSection1, setCompletedsection] = useState({});
   const [profilePhoto, setProfilePhoto] = useState(null); //profile
   const [editorCompletion, setEditorCompletion] = useState(0);
   const sections = props.sections;
@@ -26,15 +23,14 @@ function Editor(props) {
     sections[Object.keys(sections)[0]]
   );
   const [values, setValues] = useState({
-    fname: activeInformation?.detail?.fname || "",
-    lname: activeInformation?.detail?.lname || "",
+    name: activeInformation?.detail?.name || "",
     title: activeInformation?.detail?.title || "",
-
     jtitle: activeInformation?.detail?.jtitle || "",
-    // linkedin: activeInformation?.detail?.linkedin || "",
-    // github: activeInformation?.detail?.github || "",
+    linkedin: activeInformation?.detail?.linkedin || "",
+    github: activeInformation?.detail?.github || "",
     phone: activeInformation?.detail?.phone || "",
     email: activeInformation?.detail?.email || "",
+    profilePhoto: activeInformation?.detail?.profilePhoto || "",
   });
 
 
@@ -62,10 +58,7 @@ function Editor(props) {
               No Photo
             </div>
           )}
-          <div className={styles.overlay}>
-            <label htmlFor="profilePhoto" className={styles.editButton}>
-              {/* <Edit /> */}
-            </label>
+                   
             <div className={styles.inputContainer}>
               <InputControl
                 type="file"
@@ -73,27 +66,13 @@ function Editor(props) {
                 name="profilePhoto"
                 accept="image/*"
                 onChange={handleFileChange}
-              />
-              <button onClick={handleDeleteProfile} className={styles.deleteButton}>
-                <X />
-              
-              </button>
+              />              
             </div>
 
-          </div>
+          
         </div>
       </div>
     );
-  };
-
-  const handleEditProfile = () => {
-    // Handle the edit button click
-    // You can add your logic here
-  };
-
-  const handleDeleteProfile = () => {
-    // Handle the delete button click
-    // You can add your logic here
   };
   
   const workExpBody = (
@@ -319,21 +298,14 @@ function Editor(props) {
       <div className={styles.row}>
 
         <InputControl
-          label="First Name"
+          label="Name"
           placeholder="Enter your full name eg. Aashu"
           value={values.fname}
           onChange={(event) =>
             setValues((prev) => ({ ...prev, fname: event.target.value }))
           }
         />
-        <InputControl
-          label="Last Name"
-          placeholder="Enter your full name eg. Aashu"
-          value={values.lname}
-          onChange={(event) =>
-            setValues((prev) => ({ ...prev, lname: event.target.value }))
-          }
-        />
+        
 
       </div>
       <div className={styles.row}>
@@ -376,10 +348,37 @@ function Editor(props) {
 
     </div>
   );
-  const achievementsBody = (
+  const skillsBody = (
     <div className={styles.detail}>
       <div className={styles.column}>
-        <label>List your achievements</label>
+        <label>List your Skills</label>
+        <InputControl
+          placeholder="Line 1"
+          value={values.points ? values.points[0] : ""}
+          onChange={(event) => handlePointUpdate(event.target.value, 0)}
+        />
+        <InputControl
+          placeholder="Line 2"
+          value={values.points ? values.points[1] : ""}
+          onChange={(event) => handlePointUpdate(event.target.value, 1)}
+        />
+        <InputControl
+          placeholder="Line 3"
+          value={values.points ? values.points[2] : ""}
+          onChange={(event) => handlePointUpdate(event.target.value, 2)}
+        />
+        <InputControl
+          placeholder="Line 4"
+          value={values.points ? values.points[3] : ""}
+          onChange={(event) => handlePointUpdate(event.target.value, 3)}
+        />
+      </div>
+    </div>
+  );
+  const langaugeBody = (
+    <div className={styles.detail}>
+      <div className={styles.column}>
+        <label>List your langauges</label>
         <InputControl
           placeholder="Line 1"
           value={values.points ? values.points[0] : ""}
@@ -415,18 +414,7 @@ function Editor(props) {
       />
     </div>
   );
-  const otherBody = (
-    <div className={styles.detail}>
-      <InputControl
-        label="Other"
-        value={values.other}
-        placeholder="Enter something"
-        onChange={(event) =>
-          setValues((prev) => ({ ...prev, other: event.target.value }))
-        }
-      />
-    </div>
-  );
+  
 
   const generateBody = () => {
     switch (sections[activeSectionKey]) {
@@ -438,25 +426,26 @@ function Editor(props) {
         return projectBody;
       case sections.education:
         return educationBody;
-      case sections.achievement:
-        return achievementsBody;
+      case sections.skills:
+        return skillsBody;
+      case sections.langauge:
+        return langaugeBody;
       case sections.summary:
         return summaryBody;
-      case sections.other:
-        return otherBody;
       default:
         return null;
     }
   };
 
   const handleSubmission = () => {
+    setCompletedsection(prev=>({...prev,[activeSectionKey]:true}))
     switch (sections[activeSectionKey]) {
       case sections.basicInfo: {
         const tempDetail = {
-          fname: values.fname,
-          lname: values.lname,
-
+          name: values.name,
+          profilePhoto:values.profilePhoto,
           jtitle: values.jtitle,
+          title:values.title,
           linkedin: values.linkedin,
           github: values.github,
           email: values.email,
@@ -537,13 +526,26 @@ function Editor(props) {
         }));
         break;
       }
-      case sections.achievement: {
+      case sections.skills: {
         const tempPoints = values.points;
 
         props.setInformation((prev) => ({
           ...prev,
-          [sections.achievement]: {
-            ...prev[sections.achievement],
+          [sections.skills]: {
+            ...prev[sections.skills],
+            points: tempPoints,
+            sectionTitle,
+          },
+        }));
+        break;
+      }
+      case sections.langauge: {
+        const tempPoints = values.points;
+
+        props.setInformation((prev) => ({
+          ...prev,
+          [sections.langauge]: {
+            ...prev[sections.langauge],
             points: tempPoints,
             sectionTitle,
           },
@@ -562,20 +564,7 @@ function Editor(props) {
           },
         }));
         break;
-      }
-      case sections.other: {
-        const tempDetail = values.other;
-
-        props.setInformation((prev) => ({
-          ...prev,
-          [sections.other]: {
-            ...prev[sections.other],
-            detail: tempDetail,
-            sectionTitle,
-          },
-        }));
-        break;
-      }
+      }      
     }
   };
 
@@ -658,7 +647,6 @@ function Editor(props) {
       phone: activeInfo?.detail?.phone || "",
       email: activeInfo?.detail?.email || "",
       summary: typeof activeInfo?.detail !== "object" ? activeInfo.detail : "",
-      other: typeof activeInfo?.detail !== "object" ? activeInfo.detail : "",
     });
   }, [activeSectionKey]);
 
@@ -694,9 +682,10 @@ function Editor(props) {
     workExp: 0.15,
     project: 0.15,
     education: 0.1,
-    achievement: 0.1,
+    skills: 0.1,
+    langauge:0.1,
     summary: 0.1,
-    other: 0.1,
+   
   };
 
   // Calculate the total weight
@@ -707,16 +696,18 @@ function Editor(props) {
 
   // Calculate the progress based on completed sections
   const calculateCompletion = () => {
-    const completedSections = Object.keys(sections).filter(
+    const completedSections = Object.keys(completedSection1).filter(
       (key) => information[sections[key]] !== undefined
     );
 
     const completedWeight = completedSections.reduce(
-      (total, section) => total + sectionWeights[section],
+      (total, section) => total + (sectionWeights[section]?? 0),
       0
     );
+    const res = (completedWeight / totalWeight) * 100;
+    console.log({completedSection1,res,completedSections,completedWeight,sectionWeights,sections,information})
 
-    return (completedWeight / totalWeight) * 100;
+    return res;
   };
 
   useEffect(() => {
@@ -793,44 +784,7 @@ function Editor(props) {
 
         <button onClick={handleSubmission}>Save</button>
       </div>
-      <InputControl
-        label="Title"
-        placeholder="Enter section title"
-        value={sectionTitle}
-        onChange={(event) => setSectionTitle(event.target.value)}
-      />
-      <InputControl
-        label="Title"
-        placeholder="Enter section title"
-        value={sectionTitle}
-        onChange={(event) => setSectionTitle(event.target.value)}
-      />
-      <InputControl
-        label="Title"
-        placeholder="Enter section title"
-        value={sectionTitle}
-        onChange={(event) => setSectionTitle(event.target.value)}
-      />
-      <InputControl
-        label="Title"
-        placeholder="Enter section title"
-        value={sectionTitle}
-        onChange={(event) => setSectionTitle(event.target.value)}
-      />
-      <InputControl
-        label="Title"
-        placeholder="Enter section title"
-        value={sectionTitle}
-        onChange={(event) => setSectionTitle(event.target.value)}
-      />
-      <InputControl
-        label="Title"
-        placeholder="Enter section title"
-        value={sectionTitle}
-        onChange={(event) => setSectionTitle(event.target.value)}
-      />
-
-    </div>
+          </div>
 
   );
 }

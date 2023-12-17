@@ -1,12 +1,4 @@
-/* 
-
-
-
-
-
-
-
-.container {
+/* .container {
   --color: #239ce2;
   min-width: 700px;
   max-width: 850px;
@@ -157,6 +149,7 @@
   display: none;
 } */
 
+
 .container{
   position: fixed;
   top: 0px;
@@ -175,46 +168,28 @@
   user-select: none;
   z-index: 0;
 }
-
-
 .rbody{ 
-  border-radius: 6px; 
-  inset: 72px 74px 40px; 
+  border-radius: 6px;  
   position: absolute;
   cursor: pointer;
   margin-left: 30px;
   margin-right: 30px;
-  margin-bottom: 0px;
-  margin-top: 0px;
+  margin-bottom: 100px;
+  margin-top: 40px;
   background-color: white;
-  color: #000;
-  display: flex;
-  justify-content: center;
-  padding-top: 5px;  
-  z-index: 3;
-  -webkit-box-align: center;
-  -webkit-box-pack: center;
-}
-.rbody .header {
-  margin-top: 0; /* Adjust margin-top for the header */
+  color: #000;  
 }
 
-.rbody .main {
-  margin-top: 0; /* Adjust margin-top for the main section */
-}
-.mainheader {
-  
+.mainheader {  
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  /* background-color: #239ce2; Set your desired background color */
-  padding: 10px; /* Adjust padding as needed */
-  color: #fff; /* Set your desired text color */
-  font-size: 1.2rem; /* Set your desired font size */
+  justify-content: space-between; 
+  padding: 10px; 
+  color: #fff; 
+  font-size: 1.2rem; 
   gap: 20px
   ;
 }
-
 .mainheader button {
   background-color: transparent;
   border: none;
@@ -224,6 +199,50 @@
   margin: 0 5px; /* Adjust margin as needed */
 }
 
+.main{
+  display: flex;
+  height: 70vh;
+  margin-top: 100px;
+  /* border-bottom: 2px solid #000; */
+  /* padding: 10px; */
+
+}
+.col1{
+  flex: 0 0 20%;  
+  background-color: #706e6eac;  
+  padding: 20px; 
+  box-sizing: border-box;
+  border-radius: 6px;
+}
+.col2{
+  flex: 1; 
+  padding: 20px;  
+  box-sizing: border-box;
+}
+.section .sectionTitle {
+  font-size: 1rem;
+  font-weight:   bolder;
+  width: 100%;
+  border-bottom: 2px solid #000;
+}
+
+.section .content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 0;
+}
+.point{
+  list-style: none;
+  list-style-type: circle;
+  margin-left: 20px;
+}
+.link{
+  width: 20px;
+  height: 20px;
+  
+}
+/* 
 .header {
   display: flex;
   flex-direction: column;
@@ -243,6 +262,8 @@
 }
 
 .header .links {
+  display: flex;
+  flex-direction: row;
   margin-top: 15px;
   display: flex;
   gap: 30px;
@@ -251,6 +272,8 @@
 }
 
 .header .link {
+  display: flex;
+  
   font-size: 0.875rem;
   display: flex;
   align-items: center;
@@ -261,42 +284,8 @@
 .header .link svg {
   color: var(--color);
   height: 16px;
-  width: 16px;
-}
+  width: 16px; 
+}  */
 
-.main {
-  display: flex;
-  gap: 30px;
-}
 
-.col1 {
-  flex: 1; /* 1/4 of the available space */
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  background-color: #ffc0cb; /* Pink background color */
-  padding: 20px;
-}
 
-.col2 {
-  flex: 3; /* 3/4 of the available space */
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.section .sectionTitle {
-  font-size: 1.4rem;
-  font-weight: bold;
-  width: 100%;
-  border-bottom: 2px solid #000;
-}
-
-.section .content {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 10px 0;
-}
-
-/* ... (other styles remain the same) */

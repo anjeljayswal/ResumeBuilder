@@ -10,25 +10,14 @@ import styles from "./Body.module.css";
 function Body() {
   const [profilePhoto, setProfilePhoto] = useState(null);
 
-  const colors = ["#239ce2", "#48bb78", "#0bc5ea", "#a0aec0", "#ed8936"];
   const sections = {
     basicInfo: "Personal Details",
     summary: "Professional Summary",
     workExp: "Work Experience",
     education: "Education",
-    //social links
-    social_links: "Social Links",
-
     skills:"Skills",
-    //skills
     langauge:"Langauge",
-    //langauge
-    project: "Projects",
-
-    achievement: "Achievements",
-    other:"Other",
-
-    
+    project: "Projects",       
   };
   const resumeRef = useRef();  
   const [resumeInformation, setResumeInformation] = useState({
@@ -52,30 +41,15 @@ function Body() {
       sectionTitle: sections.education,
       details: [],
     },
-    [sections.achievement]: {
-      id: sections.achievement,
-      sectionTitle: sections.achievement,
+    [sections.skills]: {
+      id: sections.skills,
+      sectionTitle: sections.skills,
       points: [],
     },
     [sections.summary]: {
       id: sections.summary,
       sectionTitle: sections.summary,
       detail: "",
-    },
-    [sections.other]: {
-      id: sections.other,
-      sectionTitle: sections.other,
-      detail: "",
-    },
-    [sections.social_links]:{
-      id:sections.social_links,
-      sectionTitle:sections.social_links,
-      points:[],
-    },
-    [sections.skills]:{
-      id:sections.skills,
-      sectionTitle:sections.skills,
-      points:[],
     },
     [sections.langauge]:{
       id:sections.langauge,
@@ -89,9 +63,9 @@ function Body() {
   return (
     <div className={styles.container}>
 
-      {/* <div className={styles.toolbar}>
+      <div className={styles.toolbar}>
         
-        <ReactToPrint
+        {/* <ReactToPrint
           trigger={() => {
             return (
               <button>
@@ -100,9 +74,9 @@ function Body() {
             );
           }}
           content={() => resumeRef.current}
-        />
+        /> */}
 
-      </div> */}
+      </div>
       <div className={styles.main}>
         <div className={styles.leftside}>
           <p className={styles.heading}>Resume Builder</p>
@@ -113,20 +87,13 @@ function Body() {
             profilePhoto={profilePhoto}
           />
 
-        </div>
-
-        {/* <Editor
-          sections={sections}
-          information={resumeInformation}
-          setInformation={setInformation}
-          editorCompletion={editorCompletion}
-        /> */}
+        </div>       
         <div className={styles.leftside}>
           <Resume
             ref={resumeRef}
             sections={sections}
             information={resumeInformation}
-            // activeColor={activeColor}
+            
           />
         </div>
 
