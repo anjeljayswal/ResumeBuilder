@@ -174,13 +174,14 @@
   cursor: pointer;
   margin-left: 30px;
   margin-right: 30px;
-  /* margin-bottom: 100px; */
-  margin-top: 80px;
+  margin-top: 35px;
   background-color: white;
   color: #000;  
-  max-width: 500px;
-  min-width: 20px ;
-  height: 85vh; 
+  height: 95vh;
+  /* height: ; */
+  overflow: auto; /* Enable scrolling if content overflows */
+  page-break-after: always; 
+   
 }
 
 .mainheader {  
@@ -204,16 +205,10 @@
 
 .main{
   display: flex;
-  height: 60vh;
-  /* background-color: pink; */
-  /* margin-top: 100px; */
-  /* border-bottom: 2px solid #000; */
-  /* padding: 10px; */
-
+  height: auto;
 }
 .col1{
   flex: 0 0 20%;  
-  /* background-color: #706e6eac;   */
   padding: 20px; 
   box-sizing: border-box;
   border-radius: 6px;
@@ -222,8 +217,11 @@
   flex: 1; 
   padding: 20px;  
   box-sizing: border-box;
+  overflow: hidden;
+  page-break-after: always;
 }
 .section .sectionTitle {
+  font-family:Georgia, 'Times New Roman', Times, serif;
   font-size: 1rem;
   font-weight:   bolder;
   width: 100%;
@@ -235,6 +233,8 @@
   flex-direction: column;
   gap: 10px;
   padding: 10px 0;
+  font-size: 0.7rem;
+
 }
 .point{
   list-style: none;
@@ -296,4 +296,119 @@
 
 
 
+.section .content .item {
+  border-bottom: 1px dotted lightgray;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-bottom: 10px;
+}
+.section .content .item:last-child {
+  border-bottom: none;
+}
 
+.content .title {
+  font-weight: 500;
+  font-size: 1rem;
+  line-height: 1.3rem;
+}
+
+.content .subTitle {
+  font-weight: bold;
+  color: var(--color);
+  font-size: 1rem;
+}
+
+.content .overview {
+  font-size: 0.875rem;
+}
+
+.content .link {
+  display: flex;
+  gap: 5px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  color: var(--color);
+}
+.content .link svg {
+  height: 14px;
+  width: 14px;
+  color: var(--color);
+}
+
+.content .date {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.content .date svg {
+  height: 14px;
+  width: 14px;
+}
+
+.content .points,
+.numbered {
+  padding-left: 18px;
+  font-size: 0.875rem;
+}
+
+.numbered li {
+  list-style-type: decimal;
+}
+
+.hidden {
+  display: none;
+}
+
+
+
+@media screen and (max-width: 530px) {
+  .rbody {
+   
+  margin-top: 80px;
+  width: 210px;
+
+  }
+  .mainheader {  
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    padding: 5px; 
+    font-size: 1rem; 
+    gap: 2px;
+  }
+  .mainheader button {
+    
+    font-size: 0.7rem; 
+    
+  }
+  
+  
+.section .sectionTitle {
+  font-family:Georgia, 'Times New Roman', Times, serif;
+  font-size: 0.5rem;
+  font-weight:   bolder;
+  width: 100%;
+  border-bottom: 2px solid #000;
+}
+
+.section .content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 0;
+  font-size: 0.5rem;
+
+}
+}
+
+
+
+.resume-container {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}

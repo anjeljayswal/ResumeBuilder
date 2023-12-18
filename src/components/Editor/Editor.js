@@ -541,7 +541,7 @@ function Editor(props) {
         break;
       }
       case sections.langauge: {
-        const tempPoints = values.point;
+        const tempPoints = values.points;
 
         props.setInformation((prev) => ({
           ...prev,

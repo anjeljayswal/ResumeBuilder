@@ -372,10 +372,10 @@ const Resume = forwardRef((props, ref) => {
           {info.langauge?.sectionTitle}
         </div>
         <div className={styles.content}>
-          {info.langauge?.point?.length > 0 ? (
+          {info.langauge?.points?.length > 0 ? (
             <ul className={styles.numbered}>
               {info.langauge?.points?.map((elem, index) => (
-                <li className={styles.point} key={elem + index}>
+                <li className={styles.points} key={elem + index}>
                   {elem}
                 </li>
               ))}
@@ -449,25 +449,47 @@ const Resume = forwardRef((props, ref) => {
   //   container.style.setProperty("--color", props.activeColor);
   // }, [props.activeColor]);
 
-  const handleDownload = () => {
-    const input = pdfRef.current;
-    html2canvas(input).then((canvas) => {
-      // input.current=[...input.current,canvas];
-      // imgRef.current=canvas;
-      // console.log(input,canvas);
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF('p', 'pt', 'a4');
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = canvas.width;
-      const imgHeight = canvas.height;
-      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-      const imgX = (pdfWidth - imgWidth * ratio) / 2;
-      const imgY = 10;
-      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-      pdf.save('resume.pdf');
-    })
-  };
+  // const handleDownload = () => {
+  //   const input = pdfRef.current;
+  //   html2canvas(input).then((canvas) => {
+  //     // input.current=[...input.current,canvas];
+  //     // imgRef.current=canvas;
+  //     // console.log(input,canvas);
+  //     const imgData = canvas.toDataURL('image/png');
+  //     const pdf = new jsPDF('p', 'pt', 'a4');
+  //     const pdfWidth = pdf.internal.pageSize.getWidth();
+  //     const pdfHeight = pdf.internal.pageSize.getHeight();
+  //     const imgWidth = canvas.width;
+  //     const imgHeight = canvas.height;
+  //     const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+  //     const imgX = (pdfWidth - imgWidth * ratio) / 2;
+  //     const imgY = 10;
+  //     pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+  //     pdf.save('resume.pdf');
+  //   })
+  // };
+  const contentRef = useRef(null);
+
+  useEffect(() => {
+    const resizeFont = () => {
+      const contentElement = contentRef.current;
+
+      if (contentElement) {
+        // Your logic for resizing font based on contentElement.scrollHeight
+        // Example: Adjust font size to fit the content height
+        const desiredFontSize = (contentElement.clientHeight / 20) + 'px'; // Adjust 20 based on your preference
+        contentElement.style.fontSize = desiredFontSize;
+      }
+    };
+
+    window.addEventListener('resize', resizeFont);
+    resizeFont(); // Initial font size adjustment
+
+    return () => {
+      window.removeEventListener('resize', resizeFont);
+    };
+  }, []);
+
 
   return (
     <div ref={ref}>
@@ -478,7 +500,7 @@ const Resume = forwardRef((props, ref) => {
           <button>-</button>
           <p>Aa</p>
           <button>+</button>
-          <button onClick={handleDownload}>Download PDF</button>
+          {/* <button onClick={handleDownload}>Download PDF</button> */}
           <ReactToPrint
             trigger={() => {
               return (
@@ -487,16 +509,16 @@ const Resume = forwardRef((props, ref) => {
                 </button>
               );
             }}
-            content={() => resumeRef.current}
+            content={() => pdfRef.current}
           />
 
           {/* <button onClick={handleSaveAsDocument}>Save as Document</button> */}
 
         </div>
-        
-          {/* <div ref={pdfRef} id="content" className={styles.rbody}> */}
-          <div ref={resumeRef} id="content" className={styles.rbody}>
-          <div ref={pdfRef}>
+
+        {/* <div ref={pdfRef} id="content" className={styles.rbody}> */}
+        <div ref={pdfRef} id="content" className={styles.rbody}>
+          <div ref={contentRef}>
             {/* <div className={styles.subrbody}> */}
             <div className={styles.header}>
               <div className={styles.profilemain}>
@@ -550,13 +572,13 @@ const Resume = forwardRef((props, ref) => {
               </div>
             </div>
 
-            </div>
           </div>
-        {/* </div> */}
-
-
+        </div>
       </div>
+
+
     </div>
+
   );
 });
 

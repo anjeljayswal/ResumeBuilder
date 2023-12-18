@@ -24,3 +24,28 @@ input:hover {
 input:focus {
   border: 1px solid #239ce2;
 }
+
+@media screen and (max-width: 530px) {
+  .container {
+    width: 110px; 
+    
+  }
+  input {
+    
+    padding: 7px 7px;
+    font-size: 0.7rem;
+    
+  }
+}
+@media screen and (max-width: 530px) {
+  .container {
+    width: 110px; 
+    /* height: auto;    */
+  }
+  input {
+    
+    padding: 7px 7px;
+    font-size: 0.7rem;
+    
+  }
+}
